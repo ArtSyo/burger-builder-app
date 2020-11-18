@@ -19,6 +19,19 @@ class BurgerBuilder extends Component {
       meat: 0,
     },
     totalPrice: 5,
+    readyToBuy: false,
+  };
+
+  updateReadyState = (ingredients) => {
+    const sumAmout = Object.keys(ingredients)
+      .map((ingKey) => {
+        return ingredients[ingKey];
+      })
+      .reduce((sumAmout, el) => {
+        return sumAmout + el;
+      }, 0);
+    this.setState({ readyToBuy: sumAmout > 0 });
+    // console.log(this.state.readyToBuy)
   };
 
   addIngredientHandler = (type) => {
@@ -35,6 +48,7 @@ class BurgerBuilder extends Component {
       totalPrice: newPrice,
       ingredients: updatedIngredients,
     });
+    this.updateReadyState(updatedIngredients);
   };
 
   removeIngredientHandler = (type) => {
@@ -54,15 +68,16 @@ class BurgerBuilder extends Component {
       totalPrice: newPrice,
       ingredients: updatedIngredients,
     });
+    this.updateReadyState(updatedIngredients);
   };
 
   render() {
-      const disabledInfo = {
-          ...this.state.ingredients
-      };
-      for ( const el in disabledInfo) {
-          disabledInfo[el] = disabledInfo[el] <= 0;
-      }
+    const disabledInfo = {
+      ...this.state.ingredients,
+    };
+    for (const el in disabledInfo) {
+      disabledInfo[el] = disabledInfo[el] <= 0;
+    }
     return (
       <>
         <Burger ingredients={this.state.ingredients} />
@@ -70,6 +85,7 @@ class BurgerBuilder extends Component {
           addIngredient={this.addIngredientHandler}
           removeIngredient={this.removeIngredientHandler}
           disabled={disabledInfo}
+          readyToBuy={this.state.readyToBuy}
           price={this.state.totalPrice}
         />
       </>
