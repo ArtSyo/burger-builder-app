@@ -1,5 +1,6 @@
 import "./App.css";
 import Layout from "./components/Layout/Layout";
+import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       <div className="App">
         <Layout>
           <h1>Hello World!</h1>
-          <p>It works!</p>
+          <BurgerBuilder />
         </Layout>
       </div>
     </>
