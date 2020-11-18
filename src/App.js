@@ -7,7 +7,6 @@ function App() {
     <>
       <div className="App">
         <Layout>
-          <h1>Hello World!</h1>
           <BurgerBuilder />
         </Layout>
       </div>
