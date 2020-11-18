@@ -5,7 +5,7 @@ import "./Modal.css";
 const Modal = (props) => {
   return (
     <>
-      <BackDrop show={props.show} clicked={props.modalClosed}/>
+      <BackDrop show={props.show} clicked={props.modalClosed} />
       <div
         className="Modal"
         style={{
@@ -15,7 +15,6 @@ const Modal = (props) => {
       >
         {props.children}
       </div>
-      ;
     </>
   );
 };

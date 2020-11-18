@@ -2,15 +2,15 @@ import React from "react";
 import Button from "../../UI/Button/Button";
 
 const listStyles = {
-    listStyle: "none", 
-    textAlign: 'center',
-    padding: 0
-}
+  listStyle: "none",
+  textAlign: "center",
+  padding: 0,
+};
 
 const OrderSummary = (props) => {
   const ingredientSummary = Object.keys(props.ingredients).map((ingKey) => {
     return (
-      <li  key={ingKey}>
+      <li key={ingKey}>
         <span style={{ textTransform: "capitalize" }}>{ingKey}:</span>{" "}
         {props.ingredients[ingKey]}
       </li>
