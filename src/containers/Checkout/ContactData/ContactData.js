@@ -68,9 +68,14 @@ class ContactData extends React.Component {
     this.setState({
       loading: true,
     });
+    const formData = {};
+    for (let formElIdentifier in this.state.orderForm) {
+      formData[formElIdentifier] = this.state.orderForm[formElIdentifier].value;
+    }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
+      orderData: formData,
     };
     console.log(order);
     axios
@@ -84,6 +89,20 @@ class ContactData extends React.Component {
       });
   };
 
+  inputChangeHandler = (e, inputIdentifier) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+    };
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier],
+    };
+    updatedFormElement.value = e.target.value;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({
+      orderForm: updatedOrderForm,
+    });
+  };
+
   render() {
     let formElementArray = [];
     for (let key in this.state.orderForm) {
@@ -93,8 +112,7 @@ class ContactData extends React.Component {
       });
     }
     let form = (
-      <form>
-        {/* <Input elementType="..." elementConfig="..." value="..." /> */}
+      <form onSubmit={this.confirmOrderBtnHandler}>
         {formElementArray.map((formElement) => {
           return (
             <Input
@@ -102,12 +120,11 @@ class ContactData extends React.Component {
               elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}
               value={formElement.config.value}
+              changed={(e) => this.inputChangeHandler(e, formElement.id)}
             />
           );
         })}
-        <Button btnType="Success" clicked={this.confirmOrderBtnHandler}>
-          ORDER NOW
-        </Button>
+        <Button btnType="Success">ORDER NOW</Button>
       </form>
     );
     if (this.state.loading) {
