@@ -7,14 +7,14 @@ import "./CheckoutSummary.css";
 const CheckoutSummary = (props) => {
   return (
     <div className="CheckoutSummary">
-      <h1>Your order summary</h1>
+      <h1>YOUR ORDER SUMMARY</h1>
       <div style={{ width: "100%", margin: "auto" }}>
         <Burger ingredients={props.ingredients} />
       </div>
-      <Button btnType="Danger" clicked>
+      <Button btnType="Danger" clicked={props.checkoutCanceled}>
         CANCEL
       </Button>
-      <Button btnType="Success" clicked>
+      <Button btnType="Success" clicked={props.checkoutContinued}>
         CONTINUE
       </Button>
     </div>
