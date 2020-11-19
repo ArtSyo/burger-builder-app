@@ -4,14 +4,59 @@ import Button from "../../../components/UI/Button/Button";
 import "./ContactData.css";
 import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
+import Input from "../../../components/UI/Input/Input";
 
 class ContactData extends React.Component {
   state = {
-    name: "",
-    email: "",
-    address: {
-      street: "",
-      postalCode: "",
+    name: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Your Name",
+      },
+      value: "",
+    },
+    street: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Street",
+      },
+      value: "",
+    },
+    zipCode: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "ZIP Code",
+      },
+      value: "",
+    },
+    country: {
+      elementType: "input",
+      elementConfig: {
+        type: "text",
+        placeholder: "Country",
+      },
+      value: "",
+    },
+    email: {
+      elementType: "input",
+      elementConfig: {
+        type: "email",
+        placeholder: "Your E-Mail",
+      },
+      value: "",
+    },
+    deliveryMethod: {
+      elementType: "select",
+      elementConfig: {
+        options: [
+          { value: "fastest", displayValue: "Fastest" },
+          { value: "cheapest", displayValue: "Cheapest" },
+        ],
+      },
+      value: "",
     },
     loading: false,
   };
@@ -40,26 +85,25 @@ class ContactData extends React.Component {
   render() {
     let form = (
       <form>
-        <input
-          className="Input"
-          type="text"
-          name="name"
-          placeholder="Your Name"
+        <Input
+          elementType='...'
+          elementConfig='...'
+          value='...'
         />
-        <input
-          className="Input"
+        <Input
+          inputtype="input"
           type="email"
           name="email"
           placeholder="Your Email"
         />
-        <input
-          className="Input"
+        <Input
+          inputtype="input"
           type="text"
           name="address"
           placeholder="Your Address"
         />
-        <input
-          className="Input"
+        <Input
+          inputtype="input"
           type="text"
           name="postal"
           placeholder="Your Postal Code"
@@ -74,7 +118,7 @@ class ContactData extends React.Component {
     }
     return (
       <div className="ContactData">
-        <h4>Enter Your Contact Data</h4>
+        <h4>ENTER YOUR CONTACT DATA:</h4>
         {form}
       </div>
     );
