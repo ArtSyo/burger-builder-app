@@ -8,55 +8,57 @@ import Input from "../../../components/UI/Input/Input";
 
 class ContactData extends React.Component {
   state = {
-    name: {
-      elementType: "input",
-      elementConfig: {
-        type: "text",
-        placeholder: "Your Name",
+    orderForm: {
+      name: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Your Name",
+        },
+        value: "",
       },
-      value: "",
-    },
-    street: {
-      elementType: "input",
-      elementConfig: {
-        type: "text",
-        placeholder: "Street",
+      street: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Street",
+        },
+        value: "",
       },
-      value: "",
-    },
-    zipCode: {
-      elementType: "input",
-      elementConfig: {
-        type: "text",
-        placeholder: "ZIP Code",
+      zipCode: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "ZIP Code",
+        },
+        value: "",
       },
-      value: "",
-    },
-    country: {
-      elementType: "input",
-      elementConfig: {
-        type: "text",
-        placeholder: "Country",
+      country: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Country",
+        },
+        value: "",
       },
-      value: "",
-    },
-    email: {
-      elementType: "input",
-      elementConfig: {
-        type: "email",
-        placeholder: "Your E-Mail",
+      email: {
+        elementType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Your E-Mail",
+        },
+        value: "",
       },
-      value: "",
-    },
-    deliveryMethod: {
-      elementType: "select",
-      elementConfig: {
-        options: [
-          { value: "fastest", displayValue: "Fastest" },
-          { value: "cheapest", displayValue: "Cheapest" },
-        ],
+      deliveryMethod: {
+        elementType: "select",
+        elementConfig: {
+          options: [
+            { value: "fastest", displayValue: "Fastest" },
+            { value: "cheapest", displayValue: "Cheapest" },
+          ],
+        },
+        value: "",
       },
-      value: "",
     },
     loading: false,
   };
@@ -83,31 +85,26 @@ class ContactData extends React.Component {
   };
 
   render() {
+    let formElementArray = [];
+    for (let key in this.state.orderForm) {
+      formElementArray.push({
+        id: key,
+        config: this.state.orderForm[key],
+      });
+    }
     let form = (
       <form>
-        <Input
-          elementType='...'
-          elementConfig='...'
-          value='...'
-        />
-        <Input
-          inputtype="input"
-          type="email"
-          name="email"
-          placeholder="Your Email"
-        />
-        <Input
-          inputtype="input"
-          type="text"
-          name="address"
-          placeholder="Your Address"
-        />
-        <Input
-          inputtype="input"
-          type="text"
-          name="postal"
-          placeholder="Your Postal Code"
-        />
+        {/* <Input elementType="..." elementConfig="..." value="..." /> */}
+        {formElementArray.map((formElement) => {
+          return (
+            <Input
+              key={formElement.id}
+              elementType={formElement.config.elementType}
+              elementConfig={formElement.config.elementConfig}
+              value={formElement.config.value}
+            />
+          );
+        })}
         <Button btnType="Success" clicked={this.confirmOrderBtnHandler}>
           ORDER NOW
         </Button>
@@ -118,7 +115,7 @@ class ContactData extends React.Component {
     }
     return (
       <div className="ContactData">
-        <h4>ENTER YOUR CONTACT DATA:</h4>
+        <h3>ENTER YOUR CONTACT DATA:</h3>
         {form}
       </div>
     );

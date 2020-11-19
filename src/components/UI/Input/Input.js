@@ -36,7 +36,7 @@ const Input = (props) => {
 
   return (
     <div className="Input">
-      <label className="Label">{props.placeholder}</label>
+      <label className="Label">{props.elementConfig.placeholder}</label>
       {inputElement}
     </div>
   );
