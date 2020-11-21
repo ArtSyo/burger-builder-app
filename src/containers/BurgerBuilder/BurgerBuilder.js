@@ -16,7 +16,6 @@ import axios from '../../axios-orders';
 
 class BurgerBuilder extends Component {
   state = {
-    readyToBuy: false,
     orderIsClicked: false,
     loading: false,
     error: false,
@@ -47,7 +46,7 @@ class BurgerBuilder extends Component {
       .reduce((sumAmout, el) => {
         return sumAmout + el;
       }, 0);
-    this.setState({ readyToBuy: sumAmout > 0 });
+    return sumAmout > 0;
     // console.log(this.state.readyToBuy)
   };
 
@@ -102,7 +101,7 @@ class BurgerBuilder extends Component {
             addIngredient={this.props.onIgredientAdded}
             removeIngredient={this.props.onIgredientRemoved}
             disabled={disabledInfo}
-            readyToBuy={this.state.readyToBuy}
+            readyToBuy={this.updateReadyState(this.props.ingredients)}
             price={this.props.totalPrice}
             ordered={this.orderClickHandler}
           />
