@@ -1,21 +1,22 @@
-import React from "react";
+import React from 'react';
+import { connect } from 'react-redux';
 
-import Button from "../../../components/UI/Button/Button";
-import "./ContactData.css";
-import axios from "../../../axios-orders";
-import Spinner from "../../../components/UI/Spinner/Spinner";
-import Input from "../../../components/UI/Input/Input";
+import Button from '../../../components/UI/Button/Button';
+import './ContactData.css';
+import axios from '../../../axios-orders';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends React.Component {
   state = {
     orderForm: {
       name: {
-        elementType: "input",
+        elementType: 'input',
         elementConfig: {
-          type: "text",
-          placeholder: "Your Name",
+          type: 'text',
+          placeholder: 'Your Name',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -23,12 +24,12 @@ class ContactData extends React.Component {
         touched: false,
       },
       street: {
-        elementType: "input",
+        elementType: 'input',
         elementConfig: {
-          type: "text",
-          placeholder: "Street",
+          type: 'text',
+          placeholder: 'Street',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -36,12 +37,12 @@ class ContactData extends React.Component {
         touched: false,
       },
       zipCode: {
-        elementType: "input",
+        elementType: 'input',
         elementConfig: {
-          type: "text",
-          placeholder: "ZIP Code",
+          type: 'text',
+          placeholder: 'ZIP Code',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
           minLength: 6,
@@ -51,12 +52,12 @@ class ContactData extends React.Component {
         touched: false,
       },
       country: {
-        elementType: "input",
+        elementType: 'input',
         elementConfig: {
-          type: "text",
-          placeholder: "Country",
+          type: 'text',
+          placeholder: 'Country',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -64,12 +65,12 @@ class ContactData extends React.Component {
         touched: false,
       },
       email: {
-        elementType: "input",
+        elementType: 'input',
         elementConfig: {
-          type: "email",
-          placeholder: "Your E-Mail",
+          type: 'email',
+          placeholder: 'Your E-Mail',
         },
-        value: "",
+        value: '',
         validation: {
           required: true,
         },
@@ -77,15 +78,15 @@ class ContactData extends React.Component {
         touched: false,
       },
       deliveryMethod: {
-        elementType: "select",
+        elementType: 'select',
         elementConfig: {
           options: [
-            { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" },
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' },
           ],
         },
         validation: {},
-        value: "fastest",
+        value: 'fastest',
         valid: true,
       },
     },
@@ -104,15 +105,15 @@ class ContactData extends React.Component {
     }
     const order = {
       ingredients: this.props.ingredients,
-      price: this.props.price,
+      price: this.props.totalPrice,
       orderData: formData,
     };
     console.log(order);
     axios
-      .post("/orders.json", order)
+      .post('/orders.json', order)
       .then((response) => {
         this.setState({ loading: false });
-        this.props.history.push("/");
+        this.props.history.push('/');
       })
       .catch((error) => {
         this.setState({ loading: false });
@@ -122,8 +123,12 @@ class ContactData extends React.Component {
   checkValidation = (value, rules) => {
     let isValid = true;
 
+    if (!rules) {
+      return true;
+    }
+
     if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
+      isValid = value.trim() !== '' && isValid;
     }
 
     if (rules.minLength) {
@@ -205,4 +210,7 @@ class ContactData extends React.Component {
   }
 }
 
-export default ContactData;
+export default connect((state) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+}))(ContactData);

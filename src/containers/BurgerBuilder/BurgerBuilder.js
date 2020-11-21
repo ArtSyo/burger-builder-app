@@ -12,8 +12,6 @@ import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../store/constants';
 
 import axios from '../../axios-orders';
 
-
-
 class BurgerBuilder extends Component {
   state = {
     orderIsClicked: false,
@@ -50,7 +48,6 @@ class BurgerBuilder extends Component {
     // console.log(this.state.readyToBuy)
   };
 
-
   orderClickHandler = () => {
     this.setState(({ orderIsClicked }) => ({
       orderIsClicked: !orderIsClicked,
@@ -58,24 +55,7 @@ class BurgerBuilder extends Component {
   };
 
   orderContinueHandler = () => {
-    // alert("You continue!")
-
-    const queryParam = [];
-    for (let ing in this.state.ingredients) {
-      queryParam.push(
-        encodeURIComponent(ing) +
-          '=' +
-          encodeURIComponent(this.state.ingredients[ing])
-      );
-    }
-    queryParam.push('price=' + this.props.totalPrice);
-    const queryString = queryParam.join('&');
-    this.props.history.push({
-      pathname: '/checkout',
-      search: '?' + queryString,
-    });
-
-    // this.props.history.push('/checkout')
+    this.props.history.push('/checkout');
   };
 
   render() {
@@ -142,9 +122,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIgredientAdded: (ingName) => dispatch({type: ADD_INGREDIENT, ingredientName: ingName}),
-    onIgredientRemoved: (ingName) => dispatch({type: REMOVE_INGREDIENT, ingredientName: ingName}) 
-  }
-}
+    onIgredientAdded: (ingName) =>
+      dispatch({ type: ADD_INGREDIENT, ingredientName: ingName }),
+    onIgredientRemoved: (ingName) =>
+      dispatch({ type: REMOVE_INGREDIENT, ingredientName: ingName }),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(BurgerBuilder, axios));
