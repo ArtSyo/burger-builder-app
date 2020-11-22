@@ -8,7 +8,9 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummury';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../store/constants';
+// import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../store/constants';
+
+import { addIngredient, removeIngredient } from '../../store/actions/index';
 
 import axios from '../../axios-orders';
 
@@ -78,8 +80,8 @@ class BurgerBuilder extends Component {
         <>
           <Burger ingredients={this.props.ingredients} />
           <BuildControls
-            addIngredient={this.props.onIgredientAdded}
-            removeIngredient={this.props.onIgredientRemoved}
+            addIngredient={this.props.addIngredient}
+            removeIngredient={this.props.removeIngredient}
             disabled={disabledInfo}
             readyToBuy={this.updateReadyState(this.props.ingredients)}
             price={this.props.totalPrice}
@@ -113,23 +115,33 @@ class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     ingredients: state.ingredients,
+//     totalPrice: state.totalPrice,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onIgredientAdded: (ingName) =>
-      dispatch({ type: ADD_INGREDIENT, ingredientName: ingName }),
-    onIgredientRemoved: (ingName) =>
-      dispatch({ type: REMOVE_INGREDIENT, ingredientName: ingName }),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onIgredientAdded: (ingName) =>
+//       dispatch({ type: ADD_INGREDIENT, ingredientName: ingName }),
+//     onIgredientRemoved: (ingName) =>
+//       dispatch({ type: REMOVE_INGREDIENT, ingredientName: ingName }),
+//   };
+// };
+
+// const mapDispatchToProps = () => {
+//   return {
+//     addIngredient,
+//     removeIngredient,
+//   };
+// };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  (state) => ({ ingredients: state.ingredients, totalPrice: state.totalPrice }),
+  {
+    addIngredient,
+    removeIngredient,
+  }
 )(withErrorHandler(BurgerBuilder, axios));
