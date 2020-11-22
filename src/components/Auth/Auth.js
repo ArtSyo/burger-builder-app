@@ -38,13 +38,21 @@ class Auth extends Component {
         touched: false,
       },
     },
+    isSignup: true,
+  };
+
+  switchAuthModeHandler = () => {
+    this.setState((prevState) => {
+      return { isSignup: !prevState.isSignup };
+    });
   };
 
   submitHandler = (e) => {
     e.preventDefault();
     this.props.auth(
       this.state.controls.email.value,
-      this.state.controls.password.value
+      this.state.controls.password.value,
+      this.state.isSignup
     );
   };
 
@@ -123,8 +131,13 @@ class Auth extends Component {
       <div className="Auth">
         <form onSubmit={this.submitHandler}>
           {form}
-          <Button btnType="Success">SUBMIT</Button>
+          <Button btnType="Success">
+            {this.state.isSignup ? 'SIGN UP' : 'SIGN IN'}
+          </Button>
         </form>
+        <Button clicked={this.switchAuthModeHandler} btnType="Danger">
+          SWITCH TO {this.state.isSignup ? 'SIGN IN' : 'SIGN UP'}
+        </Button>
       </div>
     );
   }
