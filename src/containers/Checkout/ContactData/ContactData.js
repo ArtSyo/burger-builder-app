@@ -204,9 +204,9 @@ class ContactData extends React.Component {
 
 export default connect(
   (state) => ({
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    loading: state.loading
+    ingredients: state.ingredients.ingredients,
+    totalPrice: state.ingredients.totalPrice,
+    loading: state.order.loading
   }),
   { buyBurger }
 )(withErrorHandler(ContactData, axios));

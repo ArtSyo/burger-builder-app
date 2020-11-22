@@ -104,9 +104,9 @@ class BurgerBuilder extends Component {
 
 export default connect(
   (state) => ({
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    error: state.error,
+    ingredients: state.ingredients.ingredients,
+    totalPrice: state.ingredients.totalPrice,
+    error: state.ingredients.error,
   }),
   {
     addIngredient,

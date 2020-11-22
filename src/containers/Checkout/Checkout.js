@@ -36,5 +36,5 @@ class Checkout extends React.Component {
 }
 
 export default connect((state) => ({
-  ingredients: state.ingredients,
+  ingredients: state.ingredients.ingredients,
 }))(Checkout);
