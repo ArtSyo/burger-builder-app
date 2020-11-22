@@ -75,13 +75,13 @@ export const fetchOrders = () => {
   return (dispatch) => {
     dispatch(fetchOrdersStart());
     axios
-      .get('orders.json')
+      .get('/orders.json')
       .then((res) => {
         const fetchOrders = [];
         for (let key in res.data) {
           fetchOrders.push({
+              id: key,
             ...res.data[key],
-            id: key,
           });
         }
         dispatch(fetchOrdersSuccess(fetchOrders));
