@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import './Auth.css';
+import { connect } from 'react-redux';
+
+import { auth } from '../../store/actions/index';
 
 class Auth extends Component {
   state = {
@@ -35,6 +38,14 @@ class Auth extends Component {
         touched: false,
       },
     },
+  };
+
+  submitHandler = (e) => {
+    e.preventDefault();
+    this.props.auth(
+      this.state.controls.email.value,
+      this.state.controls.password.value
+    );
   };
 
   inputChangeHandler = (e, controlName) => {
@@ -110,7 +121,7 @@ class Auth extends Component {
     });
     return (
       <div className="Auth">
-        <form>
+        <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="SUCCESS">SUBMIT</Button>
         </form>
@@ -119,4 +130,4 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+export default connect(null, { auth })(Auth);
