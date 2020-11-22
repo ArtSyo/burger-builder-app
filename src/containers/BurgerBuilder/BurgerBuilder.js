@@ -14,6 +14,7 @@ import {
   addIngredient,
   removeIngredient,
   initIngredient,
+  buyInit,
 } from '../../store/actions/index';
 
 import axios from '../../axios-orders';
@@ -46,6 +47,7 @@ class BurgerBuilder extends Component {
   };
 
   orderContinueHandler = () => {
+    this.props.buyInit();
     this.props.history.push('/checkout');
   };
 
@@ -112,5 +114,6 @@ export default connect(
     addIngredient,
     removeIngredient,
     initIngredient,
+    buyInit,
   }
 )(withErrorHandler(BurgerBuilder, axios));

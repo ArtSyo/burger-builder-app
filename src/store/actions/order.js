@@ -2,6 +2,7 @@ import {
   BUY_BURGER_SUCCESS,
   BUY_BURGER_FAIL,
   BUY_BURGER_START,
+  BUY_INIT,
 } from '../constants';
 import axios from '../../axios-orders';
 
@@ -32,10 +33,17 @@ export const buyBurger = (orderData) => {
     axios
       .post('/orders.json', orderData)
       .then((response) => {
-        dispatch(buyBurgerSuccess(response.data, orderData));
+        dispatch(buyBurgerSuccess(response.data.name, orderData));
       })
       .catch((error) => {
         dispatch(buyBurgerFail(error));
       });
   };
 };
+
+export const buyInit = () => {
+    return {
+        type: BUY_INIT,
+        
+    }
+}
