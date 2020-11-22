@@ -16,6 +16,7 @@ class Orders extends Component {
     let orders = <Spinner />;
     if (!this.props.loading) {
       orders = this.props.orders.map((order) => {
+        console.log(order.id);
         return (
           <Order
             key={order.id}
@@ -23,7 +24,9 @@ class Orders extends Component {
             price={order.price}
           />
         );
+
       });
+      console.log("----end of elements");
     }
     return <div>{orders}</div>;
   }
