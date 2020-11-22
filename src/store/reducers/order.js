@@ -54,6 +54,7 @@ const order = (state = initalState, action) => {
       return {
         ...state,
         loading: true,
+        // loading: false,
       };
     case FETCH_ORDERS_FAIL:
       return {

@@ -57,6 +57,7 @@ export const fetchOrdersStart = () => {
 };
 
 export const fetchOrdersSuccess = (orders) => {
+    // console.log('----orders:', orders[1].id)
   return {
     type: FETCH_ORDERS_SUCCESS,
     orders: orders,
@@ -82,8 +83,8 @@ export const fetchOrders = () => {
             ...res.data[key],
             id: key,
           });
-          dispatch(fetchOrdersSuccess(fetchOrders));
         }
+        dispatch(fetchOrdersSuccess(fetchOrders));
       })
       .catch((err) => {
         dispatch(fetchOrdersFail(err));
