@@ -3,6 +3,7 @@ import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import './Auth.css';
 import { connect } from 'react-redux';
+import Spinner from '../UI/Spinner/Spinner';
 
 import { auth } from '../../store/actions/index';
 
@@ -113,7 +114,7 @@ class Auth extends Component {
       });
     }
 
-    const form = formElementArray.map((formElement) => {
+    let form = formElementArray.map((formElement) => {
       return (
         <Input
           key={formElement.id}
@@ -127,8 +128,18 @@ class Auth extends Component {
         />
       );
     });
+
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = <p>{this.props.error.message}</p>;
+    }
     return (
       <div className="Auth">
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="Success">
@@ -143,4 +154,7 @@ class Auth extends Component {
   }
 }
 
-export default connect(null, { auth })(Auth);
+export default connect(
+  (state) => ({ loading: state.auth.loading, error: state.auth.error }),
+  { auth }
+)(Auth);
