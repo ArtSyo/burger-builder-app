@@ -7,6 +7,10 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+
+import { buyBurger } from '../../../store/actions/index';
+
 class ContactData extends React.Component {
   state = {
     orderForm: {
@@ -91,14 +95,10 @@ class ContactData extends React.Component {
       },
     },
     formIsValid: false,
-    loading: false,
   };
 
   confirmOrderBtnHandler = (e) => {
     e.preventDefault();
-    this.setState({
-      loading: true,
-    });
     const formData = {};
     for (let formElIdentifier in this.state.orderForm) {
       formData[formElIdentifier] = this.state.orderForm[formElIdentifier].value;
@@ -108,16 +108,8 @@ class ContactData extends React.Component {
       price: this.props.totalPrice,
       orderData: formData,
     };
+    this.props.buyBurger(order);
     console.log(order);
-    axios
-      .post('/orders.json', order)
-      .then((response) => {
-        this.setState({ loading: false });
-        this.props.history.push('/');
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
   };
 
   checkValidation = (value, rules) => {
@@ -198,7 +190,7 @@ class ContactData extends React.Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return (
@@ -210,7 +202,11 @@ class ContactData extends React.Component {
   }
 }
 
-export default connect((state) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
-}))(ContactData);
+export default connect(
+  (state) => ({
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice,
+    loading: state.loading
+  }),
+  { buyBurger }
+)(withErrorHandler(ContactData, axios));
