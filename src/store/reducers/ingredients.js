@@ -1,13 +1,14 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../constants';
+import {
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+  SET_INGREDIENTS,
+  FETCH_INGREDIENTS_FAILED,
+} from '../constants';
 
 const initialState = {
-  ingredients: {
-    salad: 0,
-    meat: 0,
-    cheese: 0,
-    bacon: 0,
-  },
+  ingredients: null,
   totalPrice: 5,
+  error: false,
 };
 
 const INGREDIENT_PRICES = {
@@ -36,6 +37,17 @@ const ingredients = (state = initialState, action) => {
           [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+      };
+    case SET_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        error: false,
+      };
+    case FETCH_INGREDIENTS_FAILED:
+      return {
+        ...state,
+        error: true,
       };
     default:
       return state;

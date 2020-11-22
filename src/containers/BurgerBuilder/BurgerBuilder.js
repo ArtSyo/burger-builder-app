@@ -10,33 +10,22 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 // import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../store/constants';
 
-import { addIngredient, removeIngredient } from '../../store/actions/index';
+import {
+  addIngredient,
+  removeIngredient,
+  initIngredient,
+} from '../../store/actions/index';
 
 import axios from '../../axios-orders';
 
 class BurgerBuilder extends Component {
   state = {
     orderIsClicked: false,
-    loading: false,
-    error: false,
   };
 
-  // componentDidMount() {
-  //   // axios
-  //   //   .get(
-  //   //     'https://burger-builder-app-react-d6624.firebaseio.com/ingredients.json'
-  //   //   )
-  //   //   .then((res) => {
-  //   //     this.setState({
-  //   //       ingredients: res.data,
-  //   //     });
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     this.setState({
-  //   //       error: true,
-  //   //     });
-  //   //   });
-  // }
+  componentDidMount() {
+    this.props.initIngredient();
+  }
 
   updateReadyState = (ingredients) => {
     const sumAmout = Object.keys(ingredients)
@@ -69,7 +58,7 @@ class BurgerBuilder extends Component {
     }
     let orderSummary = null;
 
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded</p>
     ) : (
       <Spinner />
@@ -98,9 +87,7 @@ class BurgerBuilder extends Component {
         />
       );
     }
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
+
     return (
       <>
         <Modal
@@ -115,33 +102,15 @@ class BurgerBuilder extends Component {
   }
 }
 
-// const mapStateToProps = (state) => {
-//   return {
-//     ingredients: state.ingredients,
-//     totalPrice: state.totalPrice,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onIgredientAdded: (ingName) =>
-//       dispatch({ type: ADD_INGREDIENT, ingredientName: ingName }),
-//     onIgredientRemoved: (ingName) =>
-//       dispatch({ type: REMOVE_INGREDIENT, ingredientName: ingName }),
-//   };
-// };
-
-// const mapDispatchToProps = () => {
-//   return {
-//     addIngredient,
-//     removeIngredient,
-//   };
-// };
-
 export default connect(
-  (state) => ({ ingredients: state.ingredients, totalPrice: state.totalPrice }),
+  (state) => ({
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice,
+    error: state.error,
+  }),
   {
     addIngredient,
     removeIngredient,
+    initIngredient,
   }
 )(withErrorHandler(BurgerBuilder, axios));

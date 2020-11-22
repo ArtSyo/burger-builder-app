@@ -1,1 +1,1 @@
-export { addIngredient, removeIngredient } from './ingredients';
+export { addIngredient, removeIngredient, initIngredient } from './ingredients';
