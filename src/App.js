@@ -1,4 +1,8 @@
-import { Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { authCheckState } from './store/actions/index';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
@@ -9,22 +13,27 @@ import Logout from './components/Auth/Logout/Logout';
 
 import Checkout from './containers/Checkout/Checkout';
 
-function App() {
-  return (
-    <>
-      <div className="App">
-        <Layout>
-          <Switch>
-            <Route path="/checkout" component={Checkout} />
-            <Route path="/orders" component={Orders} />
-            <Route path="/auth" component={Auth} />
-            <Route exact path="/" component={BurgerBuilder} />
-            <Route exact path="/logout" component={Logout} />
-          </Switch>
-        </Layout>
-      </div>
-    </>
-  );
+class App extends React.Component {
+  componentDidMount() {
+    this.props.authCheckState();
+  }
+  render() {
+    return (
+      <>
+        <div className="App">
+          <Layout>
+            <Switch>
+              <Route path="/checkout" component={Checkout} />
+              <Route path="/orders" component={Orders} />
+              <Route path="/auth" component={Auth} />
+              <Route exact path="/" component={BurgerBuilder} />
+              <Route exact path="/logout" component={Logout} />
+            </Switch>
+          </Layout>
+        </div>
+      </>
+    );
+  }
 }
 
-export default App;
+export default withRouter(connect(null, { authCheckState })(App));
