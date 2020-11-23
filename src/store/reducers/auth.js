@@ -5,7 +5,7 @@ import {
   AUTH_LOGOUT,
   SET_AUTH_REDIRECT_PATH,
 } from '../constants';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 
 const initialState = {
   tokenId: null,
