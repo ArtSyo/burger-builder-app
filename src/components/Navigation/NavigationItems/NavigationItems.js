@@ -1,6 +1,6 @@
-import React from "react";
-import "./NavigationItems.css";
-import NavItem from "../NavigationItems/NavItem/NavItem";
+import React from 'react';
+import './NavigationItems.css';
+import NavItem from '../NavigationItems/NavItem/NavItem';
 
 const NavigationItems = (props) => {
   return (
@@ -9,7 +9,11 @@ const NavigationItems = (props) => {
         Burger Builder
       </NavItem>
       <NavItem link="/orders">Orders</NavItem>
-      <NavItem link="/auth">LogIn</NavItem>
+      {!props.isAuthenticated ? (
+        <NavItem link="/auth">LogIn</NavItem>
+      ) : (
+        <NavItem link="/logout">LogOut</NavItem>
+      )}
     </ul>
   );
 };
