@@ -112,7 +112,6 @@ class ContactData extends React.Component {
       userId: this.props.userId,
     };
     this.props.buyBurger(order, this.props.token);
-    console.log(order);
   };
 
   inputChangeHandler = (e, inputIdentifier) => {

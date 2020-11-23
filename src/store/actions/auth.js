@@ -29,9 +29,9 @@ export const authFail = (error) => {
 };
 
 export const authLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('expirationDate')
-    localStorage.removeItem('userId')
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
   return {
     type: AUTH_LOGOUT,
   };
@@ -53,23 +53,26 @@ export const setAuthRedirectPath = (path) => {
 };
 
 export const authCheckState = () => {
-    return dispatch => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            dispatch(authLogout());
-        } else {
-            const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            if (expirationDate <= new Date()) {
-                dispatch(authLogout())
-            } else {
-                const userId = localStorage.getItem('userId')
-                dispatch(authSuccess(token, userId));
-                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000))
-            }
-        }
-    
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      dispatch(authLogout());
+    } else {
+      const expirationDate = new Date(localStorage.getItem('expirationDate'));
+      if (expirationDate <= new Date()) {
+        dispatch(authLogout());
+      } else {
+        const userId = localStorage.getItem('userId');
+        dispatch(authSuccess(token, userId));
+        dispatch(
+          checkAuthTimeout(
+            (expirationDate.getTime() - new Date().getTime()) / 1000
+          )
+        );
+      }
     }
-}
+  };
+};
 
 export const auth = (email, password, isSignup) => {
   return (dispatch) => {
@@ -91,7 +94,6 @@ export const auth = (email, password, isSignup) => {
         const expirationDate = new Date(
           new Date().getTime() + res.data.expiresIn * 1000
         );
-        console.log(res);
         localStorage.setItem('token', res.data.idToken);
         localStorage.setItem('expirationDate', expirationDate);
         localStorage.setItem('userId', res.data.localId);
