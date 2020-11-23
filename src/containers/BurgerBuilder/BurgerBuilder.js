@@ -8,8 +8,6 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummury';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-// import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../store/constants';
-
 import {
   addIngredient,
   removeIngredient,
