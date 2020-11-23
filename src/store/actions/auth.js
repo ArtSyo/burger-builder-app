@@ -1,4 +1,10 @@
-import { AUTH_START, AUTH_SUCCESS, AUTH_FAIL, AUTH_LOGOUT } from '../constants';
+import {
+  AUTH_START,
+  AUTH_SUCCESS,
+  AUTH_FAIL,
+  AUTH_LOGOUT,
+  SET_AUTH_REDIRECT_PATH,
+} from '../constants';
 import axios from 'axios';
 
 export const authStart = () => {
@@ -33,6 +39,13 @@ export const checkAuthTimeout = (expirationTime) => {
     setTimeout(() => {
       dispatch(authLogout());
     }, expirationTime * 1000);
+  };
+};
+
+export const setAuthRedirectPath = (path) => {
+  return {
+    type: SET_AUTH_REDIRECT_PATH,
+    path: path,
   };
 };
 

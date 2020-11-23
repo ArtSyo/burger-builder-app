@@ -4,8 +4,9 @@ import Button from '../UI/Button/Button';
 import './Auth.css';
 import { connect } from 'react-redux';
 import Spinner from '../UI/Spinner/Spinner';
+import { Redirect } from 'react-router-dom';
 
-import { auth } from '../../store/actions/index';
+import { auth, setAuthRedirectPath } from '../../store/actions/index';
 
 class Auth extends Component {
   state = {
@@ -41,6 +42,12 @@ class Auth extends Component {
     },
     isSignup: true,
   };
+
+  componentDidMount() {
+      if (!this.props.building && this.props.authRedirectPath !== '/') {
+        this.props.setAuthRedirectPath('/')
+      }
+  }
 
   switchAuthModeHandler = () => {
     this.setState((prevState) => {
@@ -137,8 +144,16 @@ class Auth extends Component {
     if (this.props.error) {
       errorMessage = <p>{this.props.error.message}</p>;
     }
+
+    let authRedirect = null;
+
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+    }
+
     return (
       <div className="Auth">
+        {authRedirect}
         {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
@@ -155,6 +170,12 @@ class Auth extends Component {
 }
 
 export default connect(
-  (state) => ({ loading: state.auth.loading, error: state.auth.error }),
-  { auth }
+  (state) => ({
+    loading: state.auth.loading,
+    error: state.auth.error,
+    isAuthenticated: state.auth.tokenId !== null,
+    building: state.ingredients.building,
+    authRedirectPath: state.auth.authRedirectPath,
+  }),
+  { auth, setAuthRedirectPath }
 )(Auth);

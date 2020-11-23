@@ -15,6 +15,7 @@ import {
   removeIngredient,
   initIngredient,
   buyInit,
+  setAuthRedirectPath,
 } from '../../store/actions/index';
 
 import axios from '../../axios-orders';
@@ -41,9 +42,14 @@ class BurgerBuilder extends Component {
   };
 
   orderClickHandler = () => {
-    this.setState(({ orderIsClicked }) => ({
-      orderIsClicked: !orderIsClicked,
-    }));
+    if (this.props.isAuthenticated) {
+      this.setState(({ orderIsClicked }) => ({
+        orderIsClicked: !orderIsClicked,
+      }));
+    } else {
+      this.props.setAuthRedirectPath('/checkout');
+      this.props.history.push('/auth');
+    }
   };
 
   orderContinueHandler = () => {
@@ -77,6 +83,7 @@ class BurgerBuilder extends Component {
             readyToBuy={this.updateReadyState(this.props.ingredients)}
             price={this.props.totalPrice}
             ordered={this.orderClickHandler}
+            isAuthenticated={this.props.isAuthenticated}
           />
         </>
       );
@@ -109,11 +116,13 @@ export default connect(
     ingredients: state.ingredients.ingredients,
     totalPrice: state.ingredients.totalPrice,
     error: state.ingredients.error,
+    isAuthenticated: state.auth.tokenId !== null,
   }),
   {
     addIngredient,
     removeIngredient,
     initIngredient,
     buyInit,
+    setAuthRedirectPath,
   }
 )(withErrorHandler(BurgerBuilder, axios));
