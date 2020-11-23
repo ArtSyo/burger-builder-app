@@ -107,6 +107,7 @@ class ContactData extends React.Component {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData: formData,
+      userId: this.props.userId,
     };
     this.props.buyBurger(order, this.props.token);
     console.log(order);
@@ -218,6 +219,7 @@ export default connect(
     totalPrice: state.ingredients.totalPrice,
     loading: state.order.loading,
     token: state.auth.tokenId,
+    userId: state.auth.userId,
   }),
   { buyBurger }
 )(withErrorHandler(ContactData, axios));

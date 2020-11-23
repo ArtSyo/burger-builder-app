@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { authCheckState } from './store/actions/index';
@@ -17,23 +17,40 @@ class App extends React.Component {
   componentDidMount() {
     this.props.authCheckState();
   }
+
   render() {
+    let routes = (
+      <Switch>
+        <Route path="/auth" component={Auth} />
+        <Route exact path="/" component={BurgerBuilder} />
+        <Redirect to="/" />
+      </Switch>
+    );
+
+    if (this.props.isAuthenticated) {
+      routes = (
+        <Switch>
+          <Route path="/checkout" component={Checkout} />
+          <Route path="/orders" component={Orders} />
+          <Route exact path="/" component={BurgerBuilder} />
+          <Route exact path="/logout" component={Logout} />
+          <Redirect to="/" />
+        </Switch>
+      );
+    }
+
     return (
       <>
         <div className="App">
-          <Layout>
-            <Switch>
-              <Route path="/checkout" component={Checkout} />
-              <Route path="/orders" component={Orders} />
-              <Route path="/auth" component={Auth} />
-              <Route exact path="/" component={BurgerBuilder} />
-              <Route exact path="/logout" component={Logout} />
-            </Switch>
-          </Layout>
+          <Layout>{routes}</Layout>
         </div>
       </>
     );
   }
 }
 
-export default withRouter(connect(null, { authCheckState })(App));
+export default withRouter(
+  connect((state) => ({ isAuthenticated: state.auth.tokenId !== null }), {
+    authCheckState,
+  })(App)
+);

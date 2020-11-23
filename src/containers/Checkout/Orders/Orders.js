@@ -9,7 +9,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 
 class Orders extends Component {
   componentDidMount() {
-    this.props.fetchOrders(this.props.token);
+    this.props.fetchOrders(this.props.token, this.props.userId);
   }
 
   render() {
@@ -34,6 +34,7 @@ export default connect(
     orders: state.order.orders,
     loading: state.order.loading,
     token: state.auth.tokenId,
+    userId: state.auth.userId,
   }),
   { fetchOrders }
 )(withErrorHandler(Orders, axios));
