@@ -10,17 +10,18 @@ import Layout from './components/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Logout from './components/Auth/Logout/Logout';
 
-const asyncCheckout = asyncComponent(()=>{
-  return import('./containers/Checkout/Checkout')
+const asyncCheckout = asyncComponent(() => {
+  return import('./containers/Checkout/Checkout');
 });
-const asyncOrders = asyncComponent(()=>{
-  return import('./containers/Checkout/Orders/Orders')
+const asyncOrders = asyncComponent(() => {
+  return import('./containers/Checkout/Orders/Orders');
 });
-const asyncAuth = asyncComponent(()=>{
-  return import('./components/Auth/Auth')
+const asyncAuth = asyncComponent(() => {
+  return import('./components/Auth/Auth');
 });
 
 class App extends React.Component {
+  
   componentDidMount() {
     this.props.authCheckState();
   }
@@ -29,7 +30,8 @@ class App extends React.Component {
     let routes = (
       <Switch>
         <Route path="/auth" component={asyncAuth} />
-        <Route exact path="/" component={BurgerBuilder} />
+        <Route path="/" exact component={BurgerBuilder} />
+        <Route path="/orders" component={asyncOrders} />
         <Redirect to="/" />
       </Switch>
     );
@@ -39,9 +41,9 @@ class App extends React.Component {
         <Switch>
           <Route path="/checkout" component={asyncCheckout} />
           <Route path="/orders" component={asyncOrders} />
-          <Route exact path="/" component={BurgerBuilder} />
-          <Route exact path="/logout" component={Logout} />
+          <Route path="/logout" component={Logout} />
           <Route path="/auth" component={asyncAuth} />
+          <Route path="/" exact component={BurgerBuilder} />
           <Redirect to="/" />
         </Switch>
       );

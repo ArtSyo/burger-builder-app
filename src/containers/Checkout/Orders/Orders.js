@@ -8,6 +8,7 @@ import { fetchOrders } from '../../../store/actions/index';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 
 class Orders extends Component {
+  
   componentDidMount() {
     this.props.fetchOrders(this.props.token, this.props.userId);
   }
@@ -18,9 +19,9 @@ class Orders extends Component {
       orders = this.props.orders.map((order) => {
         return (
           <Order
-            key={order.id}
-            ingredients={order.ingredients}
-            price={order.price}
+          key={order.id + new Date()}
+          ingredients={order.ingredients}
+          price={order.price}
           />
         );
       });

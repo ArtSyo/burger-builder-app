@@ -38,7 +38,6 @@ class BurgerBuilder extends Component {
         return sumAmout + el;
       }, 0);
     return sumAmout > 0;
-    // console.log(this.state.readyToBuy)
   };
 
   orderClickHandler = () => {
