@@ -108,7 +108,7 @@ class ContactData extends React.Component {
       price: this.props.totalPrice,
       orderData: formData,
     };
-    this.props.buyBurger(order);
+    this.props.buyBurger(order, this.props.token);
     console.log(order);
   };
 
@@ -117,31 +117,31 @@ class ContactData extends React.Component {
 
     if (!rules) {
       return true;
-  }
-  
-  if (rules.required) {
+    }
+
+    if (rules.required) {
       isValid = value.trim() !== '' && isValid;
-  }
+    }
 
-  if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid
-  }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
 
-  if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid
-  }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
 
-  if (rules.isEmail) {
+    if (rules.isEmail) {
       const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid
-  }
+      isValid = pattern.test(value) && isValid;
+    }
 
-  if (rules.isNumeric) {
+    if (rules.isNumeric) {
       const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid
-  }
+      isValid = pattern.test(value) && isValid;
+    }
 
-  return isValid;
+    return isValid;
   };
 
   inputChangeHandler = (e, inputIdentifier) => {
@@ -216,7 +216,8 @@ export default connect(
   (state) => ({
     ingredients: state.ingredients.ingredients,
     totalPrice: state.ingredients.totalPrice,
-    loading: state.order.loading
+    loading: state.order.loading,
+    token: state.auth.tokenId,
   }),
   { buyBurger }
 )(withErrorHandler(ContactData, axios));
