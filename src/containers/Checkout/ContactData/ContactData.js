@@ -158,7 +158,6 @@ class ContactData extends React.Component {
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
-    // console.log(updatedFormElement)
     updatedOrderForm[inputIdentifier] = updatedFormElement;
 
     let formIsValid = true;

@@ -13,7 +13,7 @@ const SideDrawer = (props) => {
   return (
     <>
       <BackDrop show={props.open} clicked={props.showHandle} />
-      <div className={classList.join(" ")}>
+      <div className={classList.join(" ")} onClick={props.showHandle}>
         <div className="Logo-m">
           <Logo />
         </div>
