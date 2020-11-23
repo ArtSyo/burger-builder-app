@@ -10,9 +10,9 @@ const NavigationItems = (props) => {
       </NavItem>
       <NavItem link="/orders">Orders</NavItem>
       {!props.isAuthenticated ? (
-        <NavItem link="/auth">LogIn</NavItem>
+        <NavItem link="/auth">Log In</NavItem>
       ) : (
-        <NavItem link="/logout">LogOut</NavItem>
+        <NavItem link="/logout">Log Out</NavItem>
       )}
     </ul>
   );

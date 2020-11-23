@@ -1,12 +1,13 @@
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch } from 'react-router-dom';
 
-import "./App.css";
-import Layout from "./components/Layout/Layout";
-import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
+import './App.css';
+import Layout from './components/Layout/Layout';
+import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Orders from './containers/Checkout/Orders/Orders';
 import Auth from './components/Auth/Auth';
+import Logout from './components/Auth/Logout/Logout';
 
-import Checkout from "./containers/Checkout/Checkout";
+import Checkout from './containers/Checkout/Checkout';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/orders" component={Orders} />
             <Route path="/auth" component={Auth} />
             <Route exact path="/" component={BurgerBuilder} />
+            <Route exact path="/logout" component={Logout} />
           </Switch>
         </Layout>
       </div>
