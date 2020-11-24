@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { authCheckState } from './store/actions/index';
-import asyncComponent from './hoc/asyncComponent/asyncComponent';
 
 import './App.css';
 import Layout from './components/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Logout from './components/Auth/Logout/Logout';
 
-const asyncCheckout = asyncComponent(() => {
+const Checkout = React.lazy(() => {
   return import('./containers/Checkout/Checkout');
 });
-const asyncOrders = asyncComponent(() => {
+const Orders = React.lazy(() => {
   return import('./containers/Checkout/Orders/Orders');
 });
-const asyncAuth = asyncComponent(() => {
+const Auth = React.lazy(() => {
   return import('./components/Auth/Auth');
 });
 
@@ -27,9 +26,9 @@ const App = (props) => {
 
   let routes = (
     <Switch>
-      <Route path="/auth" component={asyncAuth} />
+      <Route path="/auth" render={() => <Auth />} />
       <Route path="/" exact component={BurgerBuilder} />
-      <Route path="/orders" component={asyncOrders} />
+      <Route path="/orders" render={() => <Orders />} />
       <Redirect to="/" />
     </Switch>
   );
@@ -37,10 +36,10 @@ const App = (props) => {
   if (props.isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/checkout" component={asyncCheckout} />
-        <Route path="/orders" component={asyncOrders} />
+        <Route path="/checkout" render={() => <Checkout />} />
+        <Route path="/orders" render={() => <Orders />} />
         <Route path="/logout" component={Logout} />
-        <Route path="/auth" component={asyncAuth} />
+        <Route path="/auth" render={() => <Auth />} />
         <Route path="/" exact component={BurgerBuilder} />
         <Redirect to="/" />
       </Switch>
@@ -50,7 +49,9 @@ const App = (props) => {
   return (
     <>
       <div className="App">
-        <Layout>{routes}</Layout>
+        <Layout>
+          <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
+        </Layout>
       </div>
     </>
   );
