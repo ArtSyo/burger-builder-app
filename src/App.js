@@ -20,9 +20,10 @@ const Auth = React.lazy(() => {
 });
 
 const App = (props) => {
+  const { authCheckState } = props;
   useEffect(() => {
-    props.authCheckState();
-  }, []);
+    authCheckState();
+  }, [authCheckState]);
 
   let routes = (
     <Switch>

@@ -42,11 +42,13 @@ const Auth = (props) => {
 
   const [isSignup, setIsSignup] = useState(true);
 
+  const { building, authRedirectPath, setAuthRedirectPath } = props;
+
   useEffect(() => {
-    if (!props.building && props.authRedirectPath !== '/') {
-      props.setAuthRedirectPath('/');
+    if (!building && authRedirectPath !== '/') {
+      setAuthRedirectPath('/');
     }
-  }, []);
+  }, [building, authRedirectPath, setAuthRedirectPath]);
 
   const switchAuthModeHandler = () => {
     setIsSignup(!isSignup);
