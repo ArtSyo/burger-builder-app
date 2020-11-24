@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Burger from '../../components/Burger/Burger';
@@ -7,8 +7,6 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummury';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-
-// import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../store/constants';
 
 import {
   addIngredient,
@@ -20,16 +18,14 @@ import {
 
 import axios from '../../axios-orders';
 
-export class BurgerBuilder extends Component {
-  state = {
-    orderIsClicked: false,
-  };
+export const BurgerBuilder = (props) => {
+  const [orderIsClicked, setOrderIsClicked] = useState(false);
 
-  componentDidMount() {
-    this.props.initIngredient();
-  }
+  useEffect(() => {
+    props.initIngredient();
+  }, []);
 
-  updateReadyState = (ingredients) => {
+  const updateReadyState = (ingredients) => {
     const sumAmout = Object.keys(ingredients)
       .map((ingKey) => {
         return ingredients[ingKey];
@@ -40,75 +36,64 @@ export class BurgerBuilder extends Component {
     return sumAmout > 0;
   };
 
-  orderClickHandler = () => {
-    if (this.props.isAuthenticated) {
-      this.setState(({ orderIsClicked }) => ({
-        orderIsClicked: !orderIsClicked,
-      }));
+  const orderClickHandler = () => {
+    if (props.isAuthenticated) {
+      setOrderIsClicked(!orderIsClicked);
     } else {
-      this.props.setAuthRedirectPath('/checkout');
-      this.props.history.push('/auth');
+      props.setAuthRedirectPath('/checkout');
+      props.history.push('/auth');
     }
   };
 
-  orderContinueHandler = () => {
-    this.props.buyInit();
-    this.props.history.push('/checkout');
+  const orderContinueHandler = () => {
+    props.buyInit();
+    props.history.push('/checkout');
   };
 
-  render() {
-    const disabledInfo = {
-      ...this.props.ingredients,
-    };
-    for (const el in disabledInfo) {
-      disabledInfo[el] = disabledInfo[el] <= 0;
-    }
-    let orderSummary = null;
+  const disabledInfo = {
+    ...props.ingredients,
+  };
+  for (const el in disabledInfo) {
+    disabledInfo[el] = disabledInfo[el] <= 0;
+  }
+  let orderSummary = null;
 
-    let burger = this.props.error ? (
-      <p>Ingredients can't be loaded</p>
-    ) : (
-      <Spinner />
-    );
+  let burger = props.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
 
-    if (this.props.ingredients) {
-      burger = (
-        <>
-          <Burger ingredients={this.props.ingredients} />
-          <BuildControls
-            addIngredient={this.props.addIngredient}
-            removeIngredient={this.props.removeIngredient}
-            disabled={disabledInfo}
-            readyToBuy={this.updateReadyState(this.props.ingredients)}
-            price={this.props.totalPrice}
-            ordered={this.orderClickHandler}
-            isAuthenticated={this.props.isAuthenticated}
-          />
-        </>
-      );
-      orderSummary = (
-        <OrderSummary
-          ingredients={this.props.ingredients}
-          clickedContinue={this.orderContinueHandler}
-          clickedCancel={this.orderClickHandler}
-          price={this.props.totalPrice}
-        />
-      );
-    }
-
-    return (
+  if (props.ingredients) {
+    burger = (
       <>
-        <Modal
-          show={this.state.orderIsClicked}
-          modalClosed={this.orderClickHandler}
-        >
-          {orderSummary}
-        </Modal>
-        {burger}
+        <Burger ingredients={props.ingredients} />
+        <BuildControls
+          addIngredient={props.addIngredient}
+          removeIngredient={props.removeIngredient}
+          disabled={disabledInfo}
+          readyToBuy={updateReadyState(props.ingredients)}
+          price={props.totalPrice}
+          ordered={orderClickHandler}
+          isAuthenticated={props.isAuthenticated}
+        />
       </>
     );
+    orderSummary = (
+      <OrderSummary
+        ingredients={props.ingredients}
+        clickedContinue={orderContinueHandler}
+        clickedCancel={orderClickHandler}
+        price={props.totalPrice}
+      />
+    );
   }
-}
+
+  return (
+    <>
+      <Modal show={orderIsClicked} modalClosed={orderClickHandler}>
+        {orderSummary}
+      </Modal>
+      {burger}
+    </>
+  );
+};
 
 export default connect(
   (state) => ({
