@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 
 export default function HttpErrorHandler(httpClient) {
+  const { interceptors } = httpClient;
   const [error, setError] = useState(null);
 
-  const requestInterceptor = httpClient.interceptors.response.use((req) => {
+  const requestInterceptor = interceptors.response.use((req) => {
     setError(null);
     return req;
   });
-  const responsetInterceptor = httpClient.interceptors.response.use(
+  const responsetInterceptor = interceptors.response.use(
     (res) => res,
     (err) => {
       setError(err);
@@ -16,10 +17,10 @@ export default function HttpErrorHandler(httpClient) {
 
   useEffect(() => {
     return () => {
-      httpClient.interceptors.request.eject(requestInterceptor);
-      httpClient.interceptors.response.eject(responsetInterceptor);
+      interceptors.request.eject(requestInterceptor);
+      interceptors.response.eject(responsetInterceptor);
     };
-  }, [requestInterceptor, responsetInterceptor]);
+  }, [requestInterceptor, responsetInterceptor, interceptors]);
 
   const errorConfirmedHandler = () => {
     setError(null);
